@@ -15,6 +15,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
@@ -52,6 +53,11 @@ public class SunBabyLoadingView extends View {
      * 画笔的颜色
      */
     private static final String PAINT_COLOR = "#7A6021";
+
+    /**
+     * 背景色
+     */
+    private static final String BG_COLOR = "#F4C042";
 
     /**
      * 太阳圆弧与光芒的空隙间距
@@ -115,7 +121,7 @@ public class SunBabyLoadingView extends View {
     public SunBabyLoadingView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
-        setBackgroundColor(Color.parseColor("#F4C042"));
+        setBackgroundColor(Color.parseColor(BG_COLOR));
         initRes();
     }
 
@@ -151,7 +157,7 @@ public class SunBabyLoadingView extends View {
         bgPaint.setStrokeCap(Paint.Cap.ROUND);
         bgPaint.setStrokeJoin(Paint.Join.ROUND);
         bgPaint.setStrokeWidth(1);
-        bgPaint.setColor(Color.parseColor("#F4C042"));
+        bgPaint.setColor(Color.parseColor(BG_COLOR));
 
         rectF = new RectF();
     }
@@ -313,8 +319,8 @@ public class SunBabyLoadingView extends View {
         orectBottom = rectF.bottom;
 
         ValueAnimator sinkAnima = ValueAnimator.ofFloat(0, endValue);
-        sinkAnima.setDuration(200);
-        sinkAnima.setInterpolator(new AccelerateInterpolator());
+        sinkAnima.setDuration(250);
+        sinkAnima.setInterpolator(new AccelerateDecelerateInterpolator());
         sinkAnima.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -459,8 +465,8 @@ public class SunBabyLoadingView extends View {
         final float endValue = SUNSHINE_RISE_LENGTH * 2.5f;
         final float middleValue = endValue * .5f;
         ValueAnimator riseFastAnima = ValueAnimator.ofFloat(0, endValue);
-        riseFastAnima.setDuration(200);
-        riseFastAnima.setInterpolator(new AccelerateInterpolator());
+        riseFastAnima.setDuration(250);
+        riseFastAnima.setInterpolator(new AccelerateDecelerateInterpolator());
         riseFastAnima.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -540,7 +546,7 @@ public class SunBabyLoadingView extends View {
         canvas.drawArc(rectF, -180 + offsetAngle, 180 - offsetAngle * 2, false, sunPaint);
 
         if (isDrawEyes)
-        drawSunEyes(canvas);
+            drawSunEyes(canvas);
 
         drawSunshine(canvas);
 
@@ -562,7 +568,6 @@ public class SunBabyLoadingView extends View {
             sunshineStopX = Math.cos(Math.toRadians(a + offsetSpin)) * (sunRadius + SPACE_SUNSHINE + SUNSHINE_LINE_LENGTH + sunPaint.getStrokeWidth()) + getWidth() * .5f;
             sunshineStopY = Math.sin(Math.toRadians(a + offsetSpin)) * (sunRadius + SPACE_SUNSHINE + SUNSHINE_LINE_LENGTH + sunPaint.getStrokeWidth()) + offsetY + lineStartY;
             if (sunshineStartY <= lineStartY && sunshineStopY <= lineStartY) {
-
                 canvas.drawLine((float) sunshineStartX, (float) sunshineStartY, (float) sunshineStopX, (float) sunshineStopY, mPaint);
             }
         }
