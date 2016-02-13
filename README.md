@@ -2,4 +2,4 @@
 一个萌萌哒太阳宝宝主题的LoadingView
 
 # 效果图
-<img src="sunbaby.gif"/>
+<img src="preview/sunbaby.gif"/>
